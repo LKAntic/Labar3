@@ -4,24 +4,23 @@
 using namespace std;
 
 
-int md(int n, int* m) { //Нахождение минимальной разницы
+int md(int n, int* m) {
     int sum = 0;
     for (int i = 0; i < n; i++) {
         sum += m[i];
     }
 
-    int target = sum / 2; //Мы хотим чтобы каждая группа каш была максимально приближенна к target
-    bool* bl = new bool[target + 1]();  //Мы задаём булев динамический массив
-    bl[0] = true; //Все элементы массива будут False, кроме первого
+    int target = sum / 2;
+    bool* bl = new bool[target + 1]();
+    bl[0] = true;
 
-    // Основной цикл для построения массива достижимых значений
-    for (int i = 0; i < n; i++) { //Этими циклами мы находим достижимые значения 
+    for (int i = 0; i < n; i++) { 
         for (int j = target; j >= m[i]; j--) {
             bl[j] = bl[j] || bl[j - m[i]];
         }
     }
 
-    int best = 0; //Мы находим самый большой достижимый элемент
+    int best = 0;
     for (int i = target; i >= 0; i--) {
         if (bl[i]) {
             best = i;
@@ -29,17 +28,17 @@ int md(int n, int* m) { //Нахождение минимальной разницы
         }
     }
 
-    delete[] bl; // Освобождение выделенной памяти, так как мы уже нашли лучший вариант
+    delete[] bl;
 
-    int otherPart = sum - best; //Мы так делаем, потому что редко где разница "0"
-    return abs(otherPart - best); //Конечный ответ
+    int otherPart = sum - best;
+    return abs(otherPart - best);
 }
 
 int main() {
     int n;
     cin >> n;
 
-    int m[32]; //Ограничение в условии на n <= 32
+    int m[32];
     for (int i = 0; i < n; i++) {
         cin >> m[i];
     }
